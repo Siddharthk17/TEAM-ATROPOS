@@ -10,6 +10,18 @@ from datetime import datetime
 
 
 class _AtroposPDF(FPDF):
+    @staticmethod
+    def _safe(text):
+        """Replace Unicode chars that built-in fonts can't render."""
+        return (str(text)
+                .replace("\u20b9", "INR ")   # ₹
+                .replace("\u2014", "-")       # —
+                .replace("\u2013", "-")       # –
+                .replace("\u2019", "'")       # '
+                .replace("\u201c", '"')       # "
+                .replace("\u201d", '"')       # "
+                .replace("\u2018", "'"))      # '
+
     def header(self):
         self.set_font("Helvetica", "B", 20)
         self.set_text_color(30, 30, 30)
@@ -30,23 +42,21 @@ class _AtroposPDF(FPDF):
     def section_title(self, title):
         self.set_font("Helvetica", "B", 13)
         self.set_text_color(40, 40, 40)
-        self.cell(0, 10, title, new_x="LMARGIN", new_y="NEXT")
+        self.cell(0, 10, self._safe(title), new_x="LMARGIN", new_y="NEXT")
         self.ln(1)
 
     def kv(self, key, value):
         self.set_font("Helvetica", "B", 9)
         self.set_text_color(80)
-        self.cell(55, 6, key)
+        self.cell(55, 6, self._safe(key))
         self.set_font("Helvetica", "", 9)
         self.set_text_color(40)
-        self.cell(0, 6, str(value), new_x="LMARGIN", new_y="NEXT")
+        self.cell(0, 6, self._safe(value), new_x="LMARGIN", new_y="NEXT")
 
     def body_text(self, text):
         self.set_font("Helvetica", "", 9)
         self.set_text_color(60)
-        # Replace unicode chars that Helvetica can't handle
-        safe = str(text).replace("\u2014", "-").replace("\u2013", "-").replace("\u2019", "'").replace("\u201c", '"').replace("\u201d", '"').replace("\u2018", "'").replace("\u20b9", "INR ")
-        self.multi_cell(0, 5, safe)
+        self.multi_cell(0, 5, self._safe(text))
         self.ln(2)
 
 
@@ -78,10 +88,10 @@ def generate_pdf_report(df, anomaly_report, wealth_strategy, forecast=None):
         pdf.set_font("Helvetica", "B", 9)
         pdf.set_text_color(
             200, 40, 40) if a.severity in ("critical", "high") else pdf.set_text_color(180, 120, 20)
-        pdf.cell(0, 6, f"[{a.severity.upper()}] {a.title}", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 6, pdf._safe(f"[{a.severity.upper()}] {a.title}"), new_x="LMARGIN", new_y="NEXT")
         pdf.set_text_color(80)
         pdf.set_font("Helvetica", "", 8)
-        pdf.cell(0, 5, f"Type: {a.anomaly_type.replace('_',' ').title()}  |  Amount: INR {a.amount_inr:,.2f}",
+        pdf.cell(0, 5, pdf._safe(f"Type: {a.anomaly_type.replace('_',' ').title()}  |  Amount: INR {a.amount_inr:,.2f}"),
                  new_x="LMARGIN", new_y="NEXT")
         pdf.body_text(a.reasoning)
 
@@ -95,7 +105,7 @@ def generate_pdf_report(df, anomaly_report, wealth_strategy, forecast=None):
     for step in wealth_strategy.action_plan:
         pdf.set_font("Helvetica", "B", 10)
         pdf.set_text_color(40)
-        pdf.cell(0, 7, f"Step {step.step_number}: {step.title}", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 7, pdf._safe(f"Step {step.step_number}: {step.title}"), new_x="LMARGIN", new_y="NEXT")
         pdf.body_text(step.description)
         pdf.kv("Category", step.category)
         pdf.kv("Est. Monthly Savings", f"INR {step.estimated_monthly_savings:,.0f}")
@@ -134,7 +144,7 @@ def generate_pdf_report(df, anomaly_report, wealth_strategy, forecast=None):
         pdf.set_font("Helvetica", "", 8)
         for cat, data in sorted(forecast["category_projections"].items(),
                                 key=lambda x: x[1]["projected_30d"], reverse=True):
-            pdf.cell(45, 5, str(cat)[:20], border=1)
+            pdf.cell(45, 5, pdf._safe(str(cat)[:20]), border=1)
             pdf.cell(35, 5, f"{data['current_total']:,.0f}", border=1, align="R")
             pdf.cell(35, 5, f"{data['projected_30d']:,.0f}", border=1, align="R")
             t = data["trend"]
@@ -162,7 +172,7 @@ def generate_pdf_report(df, anomaly_report, wealth_strategy, forecast=None):
         pct = amount / total * 100
         cnt = cat_counts.get(cat, 0)
         avg = amount / cnt if cnt > 0 else 0
-        pdf.cell(50, 5, str(cat)[:22], border=1)
+        pdf.cell(50, 5, pdf._safe(str(cat)[:22]), border=1)
         pdf.cell(35, 5, f"{amount:,.0f}", border=1, align="R")
         pdf.cell(25, 5, f"{pct:.1f}%", border=1, align="R")
         pdf.cell(20, 5, str(cnt), border=1, align="R")
