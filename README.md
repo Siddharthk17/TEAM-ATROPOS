@@ -47,7 +47,7 @@ Every agent speaks in **Pydantic-enforced JSON**. No hallucinations. No malforme
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
-│                     CSV Upload  /  Demo Mode                          │
+│                     CSV Upload  /  Demo Mode                         │
 │               (HDFC · SBI · ICICI · Kotak · Any Format)              │
 └──────────────────────┬───────────────────────────────────────────────┘
                        │
@@ -62,33 +62,33 @@ Every agent speaks in **Pydantic-enforced JSON**. No hallucinations. No malforme
            └───────────┬────────────┘
                        │
        ┌───────────────▼────────────────────┐
-       │    Agent 2: Forensic Auditor        │
-       │                                     │
-       │  ▸ Subscription Creep               │  ←  Netflix ₹199 → ₹249, you never noticed
-       │  ▸ Hidden Bank Fees                 │  ←  SMS charges, AMC fees, GST silently debited
-       │  ▸ Weekend Lifestyle Inflation       │  ←  Your weekends cost 2.3× your weekdays
-       │  ▸ Duplicate Charges                │  ←  Same merchant, same amount, 2 days apart
-       │  ▸ Spending Spikes                  │  ←  2.5× category average — flagged
-       │                                     │
-       │  (Schema: AnomalyReport)            │
+       │    Agent 2: Forensic Auditor       │
+       │                                    │
+       │  ▸ Subscription Creep              │  ←  Netflix ₹199 → ₹249, you never noticed
+       │  ▸ Hidden Bank Fees                │  ←  SMS charges, AMC fees, GST silently debited
+       │  ▸ Weekend Lifestyle Inflation     │  ←  Your weekends cost 2.3× your weekdays
+       │  ▸ Duplicate Charges               │  ←  Same merchant, same amount, 2 days apart
+       │  ▸ Spending Spikes                 │  ←  2.5× category average — flagged
+       │                                    │
+       │  (Schema: AnomalyReport)           │
        └───────────────┬────────────────────┘
                        │
        ┌───────────────▼────────────────────┐
-       │   Agent 3: Wealth Architect         │  ←  Brutal 3-step plan with exact ₹ amounts
-       │   (Schema: WealthStrategy)          │
+       │   Agent 3: Wealth Architect        │  ←  Brutal 3-step plan with exact ₹ amounts
+       │   (Schema: WealthStrategy)         │
        └───────────────┬────────────────────┘
                        │
        ┌───────────────▼────────────────────┐
-       │      Forecast Engine                │  ←  30-day projection, per-category trends
+       │      Forecast Engine               │  ←  30-day projection, per-category trends
        └───────────────┬────────────────────┘
                        │
        ┌───────────────▼────────────────────┐
-       │   Agent 4: Meta-Analyst (Debate)    │  ←  Synthesizes all findings into a verdict
+       │   Agent 4: Meta-Analyst (Debate)   │  ←  Synthesizes all findings into a verdict
        └───────────────┬────────────────────┘
                        │
           ┌────────────▼────────────────┐
-          │   Dashboard + Reports + Chat │
-          │  11 Charts · PDF · TXT · CSV │
+          │   Dashboard + Reports + Chat│
+          │  11 Charts · PDF · TXT · CSV│
           └─────────────────────────────┘
 ```
 
@@ -150,7 +150,7 @@ Every agent speaks in **Pydantic-enforced JSON**. No hallucinations. No malforme
 ┌────────────────────────────────────────────────────────────────────────┐
 │                        ATROPOS TECH CORE                               │
 ├────────────────────────────────────────────────────────────────────────┤
-│  🤖  Gemini 2.0 Flash    │  Multi-agent LLM backbone                  │
+│  🤖  Gemini 2.0 Flash     │  Multi-agent LLM backbone                  │
 │  🛡️  Pydantic v2          │  Guaranteed structured output              │
 │  🐍  Python 3.11          │  Core runtime                              │
 │  📊  Streamlit 1.54+      │  Interactive dashboard                     │
@@ -314,7 +314,7 @@ MIT — open source, free to use and modify.
 
 <div align="center">
 
-### Built with ☕ and controlled fury by [Siddharthk17](https://github.com/Siddharthk17)
+### Built with ☕ and controlled fury by [Siddharthk17](https://github.com/Siddharthk17) and [sharvanimarne](https://github.com/sharvanimarne)
 
 <br/>
 
