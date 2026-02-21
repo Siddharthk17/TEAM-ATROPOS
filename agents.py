@@ -1,19 +1,3 @@
-"""
-ATROPOS Finance AI — Multi-Agent Orchestration Engine
-======================================================
-Three specialized AI agents powered by Google Gemini with strict Pydantic
-schemas for structured JSON output. Each agent has a rule-based fallback.
-
-  Agent 1 — The Sanitizer:      Cleans messy bank narrations → clean merchant + category.
-  Agent 2 — The Forensic Auditor: Detects Subscription Creep, Hidden Bank Fees,
-                                   Weekend Lifestyle Inflation.
-  Agent 3 — The Wealth Architect: Brutal, honest 3-step savings action plan.
-  Chat Agent — "Talk to your Data" natural language interface.
-
-WOW FACTOR: Every LLM call uses Pydantic response_schema for guaranteed
-parseable JSON — zero chance of malformed output crashing the app.
-"""
-
 import os
 import json
 import pandas as pd
@@ -24,12 +8,6 @@ from google import genai
 from google.genai import types
 
 load_dotenv()
-
-
-# =============================================================================
-# PYDANTIC SCHEMAS — strict contracts for every LLM interaction
-# WOW FACTOR: Judges can see we're forcing structured output, not hoping for it.
-# =============================================================================
 
 class ColumnMapping(BaseModel):
     """Smart CSV column identification — works with any Indian bank format."""
@@ -88,9 +66,7 @@ class WealthStrategy(BaseModel):
     overall_verdict: str = Field(description="One paragraph brutal honest assessment")
 
 
-# =============================================================================
 # GEMINI CLIENT
-# =============================================================================
 
 def _get_client():
     """Initialize the Gemini client from environment."""
@@ -103,9 +79,7 @@ def _get_client():
 MODEL_ID = "gemini-2.0-flash"
 
 
-# =============================================================================
 # AGENT METRICS — Track tokens, success/fallback for every LLM call
-# =============================================================================
 
 _metrics = {
     "total_calls": 0, "tokens_in": 0, "tokens_out": 0,
@@ -141,9 +115,7 @@ def _track(name, response=None, fallback=False):
     _metrics["per_agent"][name] = {"tokens_in": ti, "tokens_out": to, "fallback": fallback}
 
 
-# =============================================================================
 # COLUMN MAPPER — Smart CSV column detection
-# =============================================================================
 
 def map_columns(df: pd.DataFrame) -> tuple:
     """Auto-detects Date, Description, Amount columns from any bank CSV format."""
@@ -230,10 +202,8 @@ def _fallback_column_mapping(df: pd.DataFrame) -> ColumnMapping:
     )
 
 
-# =============================================================================
 # AGENT 1 — THE SANITIZER
 # Takes messy "UPI/123/ZOMATO" → {"merchant": "Zomato", "category": "Food"}
-# =============================================================================
 
 def run_sanitizer(descriptions: list, chunk_size: int = 40) -> tuple:
     """
@@ -297,10 +267,8 @@ def _extract_merchant_fallback(desc: str) -> str:
     return " ".join(cleaned[:3]).title() if cleaned else desc[:30]
 
 
-# =============================================================================
 # AGENT 2 — THE FORENSIC AUDITOR
 # Detects: Subscription Creep, Hidden Bank Fees, Weekend Lifestyle Inflation
-# =============================================================================
 
 def run_forensic_audit(df: pd.DataFrame) -> tuple:
     """
@@ -473,10 +441,8 @@ def _fallback_audit(df: pd.DataFrame) -> AnomalyReport:
     )
 
 
-# =============================================================================
 # AGENT 3 — THE WEALTH ARCHITECT
 # Brutal, honest, 3-step action plan to save money.
-# =============================================================================
 
 def run_wealth_architect(df: pd.DataFrame, anomaly_report: AnomalyReport) -> tuple:
     """
@@ -573,9 +539,7 @@ def _fallback_strategy(df: pd.DataFrame) -> WealthStrategy:
     )
 
 
-# =============================================================================
 # CHAT AGENT — "Talk to your Data"
-# =============================================================================
 
 def chat_with_data(df: pd.DataFrame, question: str, chat_history: list) -> str:
     """Users ask natural-language questions; Gemini answers using the dataframe context."""
@@ -615,9 +579,7 @@ Be concise, use ₹, give actionable advice. Use markdown formatting."""
         return f"Sorry, couldn't process that. Error: {str(e)[:100]}"
 
 
-# =============================================================================
 # SPENDING FORECAST — Trend-based 30-day projection
-# =============================================================================
 
 def run_forecast(df: pd.DataFrame) -> dict:
     """Simple trend-based forecast: splits data into halves, computes rate change."""
@@ -656,9 +618,7 @@ def run_forecast(df: pd.DataFrame) -> dict:
     }
 
 
-# =============================================================================
 # SMART ALERTS — Notification-style alerts from analysis results
-# =============================================================================
 
 def generate_smart_alerts(df: pd.DataFrame, anomaly_report, wealth_strategy) -> list:
     """Generate notification-style alerts from all analysis results."""
@@ -715,9 +675,7 @@ def generate_smart_alerts(df: pd.DataFrame, anomaly_report, wealth_strategy) -> 
     return alerts[:6]
 
 
-# =============================================================================
 # PEER BENCHMARKING — Indian urban spending comparisons
-# =============================================================================
 
 # Approximate Indian urban household spending (% of monthly expenditure)
 INDIA_URBAN_BENCHMARKS = {
@@ -750,9 +708,7 @@ def get_peer_comparison(df: pd.DataFrame) -> list:
     return sorted(comparisons, key=lambda x: x["ratio"], reverse=True)
 
 
-# =============================================================================
 # AGENT DEBATE — Meta-analysis across all agents
-# =============================================================================
 
 def run_agent_debate(df: pd.DataFrame, anomaly_report, wealth_strategy, forecast: dict) -> str:
     """All agents' findings synthesized into a unified executive brief by Gemini."""
