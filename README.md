@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/🚀_LIVE_DEMO-8b5cf6?style=for-the-badge&logoColor=white" alt="Live Demo"/>
+  <a href="https://team-atropos.streamlit.app"><img src="https://img.shields.io/badge/🚀_LIVE_DEMO-8b5cf6?style=for-the-badge&logoColor=white" alt="Live Demo"/></a>
   <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
   <img src="https://img.shields.io/badge/Streamlit-1.54+-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit"/>
   <img src="https://img.shields.io/badge/Gemini_2.0_Flash-Powered-8E75B2?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI"/>
