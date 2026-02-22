@@ -1,9 +1,3 @@
-"""
-ATROPOS Finance AI — Multi-Agent Financial Intelligence Dashboard
-=================================================================
-Run:  streamlit run app.py
-"""
-
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -22,7 +16,7 @@ from agents import (
 import streamlit.components.v1 as components
 from report_gen import generate_pdf_report
 
-# ── Config ────────────────────────────────────────────────────────
+# Config
 st.set_page_config(page_title="ATROPOS Finance AI", page_icon="⚔️", layout="wide", initial_sidebar_state="expanded")
 
 P = ["#8b5cf6","#06b6d4","#f59e0b","#10b981","#ef4444","#ec4899","#f97316","#84cc16","#6366f1","#14b8a6"]
@@ -41,7 +35,7 @@ def _layout(**kw):
     base.update(kw)
     return base
 
-# ── Theme ─────────────────────────────────────────────────────────
+# Theme
 if "light_mode" not in st.session_state:
     st.session_state.light_mode = False
 
@@ -54,7 +48,7 @@ TEXT2   = "#6b7280" if lm else "#5a5a70"
 TEXT3   = "#9ca3af" if lm else "#4e4e64"
 GRID    = "#e5e7eb" if lm else "#1c1c28"
 
-# ── CSS ───────────────────────────────────────────────────────────
+# CSS
 st.markdown(f"""
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -214,7 +208,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Session state ─────────────────────────────────────────────────
+# Session state
 defaults = {
     "pipeline_run": False, "df": None, "anomaly_report": None,
     "wealth_strategy": None, "forecast": None, "alerts": None,
@@ -230,7 +224,7 @@ def _stream(text, speed=0.012):
         yield ch
         time.sleep(speed)
 
-# ── Header ────────────────────────────────────────────────────────
+# Header
 hdr_l, hdr_r = st.columns([4, 1])
 with hdr_l:
     st.markdown(f"""
@@ -254,7 +248,7 @@ with hdr_r:
             st.rerun()
 st.divider()
 
-# ── Sidebar ───────────────────────────────────────────────────────
+# Sidebar
 with st.sidebar:
     st.markdown("### ATROPOS TERMINAL")
     st.markdown("---")
@@ -406,9 +400,7 @@ with st.sidebar:
                 st.code(trace, language="bash")
 
 
-# ══════════════════════════════════════════════════════════════════
 # MAIN DASHBOARD
-# ══════════════════════════════════════════════════════════════════
 if st.session_state.pipeline_run and st.session_state.df is not None:
     df = st.session_state.df
     anomaly_report = st.session_state.anomaly_report
@@ -455,14 +447,12 @@ if st.session_state.pipeline_run and st.session_state.df is not None:
 
     st.markdown("")
 
-    # ══════════════════════════════════════════════════════════════
     # TABS
-    # ══════════════════════════════════════════════════════════════
     tab_ov, tab_an, tab_for, tab_intel, tab_sim, tab_rep = st.tabs([
         "Overview", "Deep Analysis", "Forensics", "Intelligence", "What-If Simulator", "Report & Chat",
     ])
 
-    # ── TAB: OVERVIEW ─────────────────────────────────────────────
+    # TAB: OVERVIEW
     with tab_ov:
         st.markdown(f'<p class="sec-title">Money Flow</p><p class="sec-sub">Account → Category → Merchant</p>', unsafe_allow_html=True)
         cat_totals = fdf.groupby("category")["amount"].sum().sort_values(ascending=False)
@@ -523,7 +513,7 @@ if st.session_state.pipeline_run and st.session_state.df is not None:
                 yaxis=dict(title="₹",gridcolor=GRID,showgrid=True,zeroline=False),xaxis=dict(gridcolor=GRID,showgrid=False,zeroline=False)))
             st.plotly_chart(fig_d, use_container_width=True)
 
-    # ── TAB: DEEP ANALYSIS ────────────────────────────────────────
+    # TAB: DEEP ANALYSIS
     with tab_an:
         c_l2,c_r2 = st.columns(2)
         with c_l2:
@@ -566,7 +556,7 @@ if st.session_state.pipeline_run and st.session_state.df is not None:
             yaxis=dict(title="₹",gridcolor=GRID,showgrid=True,zeroline=False),xaxis=dict(gridcolor=GRID,showgrid=False,zeroline=False)))
         st.plotly_chart(fig_mom, use_container_width=True)
 
-    # ── TAB: FORENSICS ────────────────────────────────────────────
+    # TAB: FORENSICS
     with tab_for:
         st.markdown(f'<p class="sec-title">Anomaly Timeline</p><p class="sec-sub">Flagged transactions overlaid on normal spending</p>', unsafe_allow_html=True)
         anom_ids = set()
@@ -626,7 +616,7 @@ if st.session_state.pipeline_run and st.session_state.df is not None:
         else:
             st.success("No anomalies detected.")
 
-    # ── TAB: INTELLIGENCE ─────────────────────────────────────────
+    # TAB: INTELLIGENCE
     with tab_intel:
         # Agent Debate
         st.markdown(f'<p class="sec-title">Agent Consensus</p><p class="sec-sub">Meta-analysis: all agents debate their findings</p>', unsafe_allow_html=True)
@@ -686,7 +676,7 @@ if st.session_state.pipeline_run and st.session_state.df is not None:
 <p style="color:{TEXT3};font-size:0.68rem;margin:8px 0 0 0;">Score: {health:.0f}/100 | Risk: {anomaly_report.risk_score:.0f}/100</p>
 </div>''', unsafe_allow_html=True)
 
-    # ── TAB: WHAT-IF SIMULATOR ────────────────────────────────────
+    # TAB: WHAT-IF SIMULATOR
     with tab_sim:
         st.markdown(f'<p class="sec-title">What-If Simulator</p><p class="sec-sub">Drag sliders to model spending reductions per category and instantly see projected savings</p>', unsafe_allow_html=True)
         st.info("Each slider reduces that category's spending by the chosen %. For example, setting Food Delivery to 30% means you'd spend 30% less on food delivery. The savings are projected to monthly and annual totals.", icon="💡")
@@ -727,7 +717,7 @@ if st.session_state.pipeline_run and st.session_state.df is not None:
             xaxis=dict(gridcolor=GRID, showgrid=False, zeroline=False)))
         st.plotly_chart(fig_sim, use_container_width=True)
 
-    # ── TAB: REPORT & CHAT ────────────────────────────────────────
+    # TAB: REPORT & CHAT
     with tab_rep:
         # Audio Summary
         audio_text = (f"Your total spending over {days} days is {total_spent:,.0f} rupees across {n_txns} transactions. "
@@ -819,9 +809,7 @@ document.getElementById('playBtn').addEventListener('click', function() {{
 
 
 else:
-    # ══════════════════════════════════════════════════════════════
     # LANDING
-    # ══════════════════════════════════════════════════════════════
     st.markdown("")
     _,center,_ = st.columns([1,3,1])
     with center:
