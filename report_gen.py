@@ -1,10 +1,3 @@
-"""
-ATROPOS Finance AI — PDF Report Generator
-==========================================
-Generates a styled PDF report with executive summary, forensic findings,
-action plan, category breakdown, and forecast.
-"""
-
 from fpdf import FPDF
 from datetime import datetime
 
@@ -66,7 +59,7 @@ def generate_pdf_report(df, anomaly_report, wealth_strategy, forecast=None):
     total = df["amount"].sum()
     days = max((df["date"].max() - df["date"].min()).days, 1)
 
-    # ── Page 1: Executive Summary + Findings ──
+    # Page 1: Executive Summary + Findings
     pdf.add_page()
     pdf.section_title("Executive Summary")
     pdf.kv("Total Spent", f"INR {total:,.0f}")
@@ -95,7 +88,7 @@ def generate_pdf_report(df, anomaly_report, wealth_strategy, forecast=None):
                  new_x="LMARGIN", new_y="NEXT")
         pdf.body_text(a.reasoning)
 
-    # ── Page 2: Action Plan ──
+    # Page 2: Action Plan
     pdf.add_page()
     pdf.section_title("Wealth Architect - Action Plan")
     total_sav = sum(s.estimated_monthly_savings for s in wealth_strategy.action_plan)
@@ -117,7 +110,7 @@ def generate_pdf_report(df, anomaly_report, wealth_strategy, forecast=None):
     pdf.cell(0, 7, "Verdict", new_x="LMARGIN", new_y="NEXT")
     pdf.body_text(wealth_strategy.overall_verdict)
 
-    # ── Page 3: Forecast ──
+    # Page 3: Forecast
     if forecast:
         pdf.add_page()
         pdf.section_title("30-Day Spending Forecast")
@@ -151,7 +144,7 @@ def generate_pdf_report(df, anomaly_report, wealth_strategy, forecast=None):
             pdf.cell(25, 5, f"{'+'if t>0 else ''}{t:.0f}%", border=1, align="R")
             pdf.ln()
 
-    # ── Page 4: Category Breakdown ──
+    # Page 4: Category Breakdown
     pdf.add_page()
     pdf.section_title("Category Breakdown")
 
