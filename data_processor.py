@@ -1,13 +1,3 @@
-"""
-Aura Finance AI — Data Processor
-==================================
-Handles CSV parsing, smart column mapping, and data standardization.
-Supports messy Indian bank statement formats from any major bank
-(HDFC, ICICI, SBI, Kotak, Axis, etc.).
-
-WOW FACTOR: Upload ANY bank CSV → automatically detects columns → standardizes data.
-"""
-
 import pandas as pd
 import numpy as np
 from typing import Optional
@@ -61,15 +51,15 @@ def standardize_dataframe(df: pd.DataFrame, mapping) -> tuple:
     try:
         result = pd.DataFrame()
 
-        # --- Map date column ---
+        # Map date column
         result["date"] = pd.to_datetime(
             df[mapping.date_column], dayfirst=True, errors="coerce"
         )
 
-        # --- Map description column ---
+        # Map description column
         result["description"] = df[mapping.description_column].astype(str).str.strip()
 
-        # --- Map amount column(s) ---
+        # Map amount column(s)
         # Handle the 3 common formats: single amount, separate debit/credit, or auto-detect
         if mapping.amount_column and mapping.amount_column in df.columns:
             # Single amount column (e.g., HDFC format)
@@ -100,7 +90,7 @@ def standardize_dataframe(df: pd.DataFrame, mapping) -> tuple:
         if "amount" not in result.columns:
             return None, "❌ Could not identify an amount column in your CSV."
 
-        # --- Clean up ---
+        # Clean up
         # Only keep rows with valid date + amount, filter out zero-amount rows
         result = result.dropna(subset=["date", "amount"])
         result = result[result["amount"] > 0]
