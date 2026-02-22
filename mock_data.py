@@ -316,9 +316,7 @@ def generate_mock_transactions() -> pd.DataFrame:
     )
     tx_id += 1
 
-    # =========================================================================
     # BUILD FINAL DATAFRAME
-    # =========================================================================
     df = pd.DataFrame(transactions)
     df["date"] = pd.to_datetime(df["date"])
     df = df.sort_values(by=["date", "transaction_id"]).reset_index(drop=True)
