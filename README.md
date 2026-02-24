@@ -1,4 +1,4 @@
-<h1 align="center">⚔️ ATROPOS FINANCE AI ⚔️</h1>
+<h1 align="center">🔥 ATROPOS FINANCE AI </h1>
 <h3 align="center"><i>The Fate-Cutter of Financial Intelligence</i></h3>
 
 <p align="center">
