@@ -78,7 +78,6 @@ def _get_client():
 
 MODEL_ID = "gemini-2.0-flash"
 
-
 # AGENT METRICS — Track tokens, success/fallback for every LLM call
 
 _metrics = {

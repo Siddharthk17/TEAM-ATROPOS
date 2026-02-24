@@ -1,7 +1,6 @@
 from fpdf import FPDF
 from datetime import datetime
 
-
 class _AtroposPDF(FPDF):
     @staticmethod
     def _safe(text):
